@@ -1,0 +1,131 @@
+#include <iostream>
+using namespace std;
+// Định nghĩa cấu trúc của 1 phần tử trong hàng đợi thông thường
+const int MAX = 5;  // Định nghĩa MAX là hằng số có giá trị 5
+
+struct NQueue {
+
+    int data[MAX];     // Mảng để lưu các phần tử queue
+
+    int front;                 // Vị trí đầu hàng đợi (phần tử đầu tiên)
+
+    int rear;                  // Vị trí cuối hàng đợi (phần tử cuối cùng)
+ 
+    int count;              // Đếm số phần tử hiện tại
+};
+
+// Khởi tạo
+void makeQueue(NQueue &q) {
+    q.front = 0;
+    q.rear = 0;
+    q.count = 0;
+}
+// độ phức tạp O(1)
+
+// Kiểm tra rỗng
+bool isEmpty(NQueue q) {
+    return q.count == 0;
+}
+// độ phức tạp O(1)
+
+// Kiểm tra đầy
+bool isFull(NQueue q) {
+    return q.count == MAX;
+}
+// độ phức tạp O(1)
+
+// Thêm phần tử vào hàng đợi
+void enqueue(NQueue &q, int d) {
+    // Kiểm tra đầy
+        if ( isFull(q) ) {
+            cout << " hang doi day " << endl;
+            return;
+        }
+        q.data[q.rear] = d;
+        q.rear++;
+        q.count++;
+    }
+    // độ phức tạp O(1)
+
+    // Loại bỏ phần tử đầu hàng đợi
+void dequeue(NQueue &q) {
+    if ( isEmpty(q) ) {
+        cout << " Hang doi rong " << endl;
+        return;
+    }
+        cout << " gia tri: " << q.data[q.front] << endl;
+
+    for (int i = 0; i < q.count - 1; i++) {
+
+        q.data[i] = q.data[i + 1];
+    }
+    q.data[q.count - 1] = 0; // Gán phần tử cuối thành 0 tránh lỗi
+    q.rear--;         // Lùi rear về trái  
+    q.count--;     // Giảm số lượng phần tử
+}
+// độ phức tạp O(n)
+
+// Truy vấn phần tử đầu
+void peek(NQueue q) {
+    if ( isEmpty(q) ) {
+        cout << " Hang doi rong " << endl;
+        return;
+    }
+        cout << " gia tri: " << q.data[q.front] << endl;
+}
+// Độ phức tạp O(1)
+
+// Hiển thị các phần tử trong hàng đợi
+void duyet(NQueue q) {
+    if ( isEmpty(q) ) {
+        cout << "Hang doi rong " << endl;
+        return;
+    }
+    cout << "Danh sach: "<<endl;
+    for (int i = 0; i < q.count ; i++) {
+        cout << q.data[i] << endl;
+    } 
+}
+// Đếm số phần tử có trong hàng đợi
+  void size(NQueue q){
+     if ( isEmpty(q) ) {
+        cout << " khong co phan tu " << endl;
+        return;
+    } cout << " so phan tu: " << q.count << endl;
+}           
+// Cả 2 có độ phức tạp O(n) và O(1)
+
+int main() {
+    NQueue q;
+    makeQueue(q);  // Khởi tạo hàng đợiS
+    // Thêm các phần tử vào hàng đợi
+    enqueue(q, 10);  // Thêm phần tử 10
+    enqueue(q, 20);  // Thêm phần tử 20
+    enqueue(q, 30);  // Thêm phần tử 30
+    enqueue(q, 40);  // Thêm phần tử 40
+    enqueue(q, 50);  // Thêm phần tử 50
+
+    // Thêm phần tử vào hàng đợi khi hàng đợi đã đầy
+    enqueue(q, 60);  // Hàng đợi đầy, sẽ in "hang doi day"
+
+    // Hiển thị các phần tử trong hàng đợi
+    cout << "Danh sach trong hang doi:" << endl;
+    duyet(q);
+
+    // Truy vấn phần tử đầu
+    cout << "Phan tu dau hang doi: ";
+    peek(q);
+
+    // Loại bỏ phần tử đầu hàng đợi
+    cout << "Xoa phan tu dau hang doi:" << endl;
+    dequeue(q);
+
+    // Hiển thị các phần tử trong hàng đợi sau khi loại bỏ
+    cout << "Danh sach trong hang doi sau khi xoa:" << endl;
+    duyet(q);
+
+    // Kiểm tra số lượng phần tử trong hàng đợi
+    size(q);
+
+    return 0;
+}
