@@ -1,0 +1,179 @@
+#include <iostream>
+using namespace std;
+// Định nghĩa cấu trúc hàng đợi ưu tiên
+const int MAX = 10;           // Định nghĩa MAX là hằng số có giá trị 10
+
+struct PriorityQueue {
+
+    int data[MAX];                   // Mảng lưu dữ liệu các phần tử 
+
+    int priority[MAX];             // Mảng lưu dữ liệu độ ưu tiên của các phần tử
+
+    int front, rear, count;     // Các biến: đằng trước, đằng sau, và số lượng phần tử
+
+};
+// Khởi tạo hàng đợi
+void makePriorityQueue(PriorityQueue &q) {
+    q.front = 0;
+    q.rear = 0;
+    q.count = 0;
+}
+// độ phức tạp O(1)
+// Kiểm tra hàng đợi rỗng
+bool isEmpty(PriorityQueue q) {
+
+    return q.count == 0;                       
+}
+// độ phức tạp O(1)
+// Kiểm tra hàng đợi đầy
+bool isFull(PriorityQueue q) {
+
+    return q.count == MAX;                      
+}
+// độ phức tạp O(1)
+
+// Sắp xếp theo độ ưu tiên 
+void bubbleSort(PriorityQueue &q) {
+    for (int i = 0; i < q.count - 1; i++) {
+
+        for(int j = 0; j < q.count - i - 1; j++){
+
+                  if ( q.priority[j] < q.priority[j + 1]){
+     // Hoán đổi thứ tự của data
+                         int temp = q.priority[j];
+                         q.priority[j] = q.priority[j + 1];
+                         q.priority[j + 1] = temp;
+     // Hoán đổi thứ tự của priority
+                         temp = q.data[j];
+                         q.data[j] = q.data[j + 1];
+                         q.data[j + 1] = temp;
+            }
+        }
+    }
+} 
+// độ phức tạp O(n^2)
+// Thêm phần tử vào hàng đợi
+void enqueue(PriorityQueue &q, int d, int p) {
+// Kiểm tra đầy
+    if ( isFull(q) ) {
+        cout << " hang doi day " << endl;
+        return;
+    }
+    q.data[q.rear] = d;
+    q.priority[q.rear] = p;
+    q.rear++;
+    q.count++;
+    bubbleSort(q) ;                            // sắp xếp lại theo độ ưu tiên
+}
+// độ phức tạp O(n^2)
+
+// Loại bỏ phần tử ưu tiên cao nhất
+void dequeue(PriorityQueue &q) {
+    if ( isEmpty(q) ) {
+        cout << " Hang doi rong " << endl;
+        return;
+    }
+        cout << " gia tri: " << q.data[q.front] << " " <<" pri: " << q.priority[q.front] << endl;
+
+    for (int i = 0; i < q.count - 1; i++) {
+
+        q.data[i] = q.data[i + 1];
+
+        q.priority[i] = q.priority[i + 1];
+    }
+
+    q.rear--;         // Lùi rear về trái  
+    q.count--;     // Giảm số lượng phần tử
+}
+// độ phức tạp O(n)
+
+// Truy vấn phần tử ưu tiên cao nhất (không xóa)
+void peek(PriorityQueue q) {
+    if ( isEmpty(q) ) {
+        cout << " Hang doi rong " << endl;
+        return;
+    }
+        cout << " gia tri dinh: " << q.data[q.front] << " " <<" pri: " << q.priority[q.front] << endl;
+}
+// độ phức tạp O(1)
+
+// Cập nhật độ ưu tiên của phần tử (tìm theo giá trị)
+void updatePriority(PriorityQueue &q, int d, int newPriority) {
+    if ( isEmpty(q) ) {
+        cout << " hang doi rong " << endl;
+        return;
+       }
+    for (int i = 0; i < q.count  ; i++) {
+        if ( q.data[i] == d ){
+         for ( int j = i; j < q.count - 1 ; j++){
+          q.data[j] = q.data[j + 1];
+
+          q.priority[j] = q.priority[j + 1];
+        }
+          q.rear--;                                             // Lùi rear về trái  
+
+          q.count--;                                        // Giảm số lượng phần tử
+
+          enqueue(q, d, newPriority);   // Gọi hàm enqueue()
+
+          return;                                 
+         } 
+     }
+           cout << " khong tim thay gia tri can thay doi " << endl;
+ }
+
+// độ phức tạp O(n^2)
+
+// Hiển thị các phần tử trong hàng đợi
+void duyet(PriorityQueue q) {
+    if ( isEmpty(q) ) {
+        cout << "Hang doi rong " << endl;
+        return;
+    }
+    cout << "Danh sach: "<<endl;
+    for (int i = 0; i < q.count  ; i++) {
+        cout << q.data[i] <<","<< q.priority[i] << endl;
+    } 
+}
+// Đếm số phần tử có trong hàng đợi
+  void size(PriorityQueue q){
+     if ( isEmpty(q) ) {
+        cout << " khong co phan tu " << endl;
+        return;
+    } cout << " so phan tu: " << q.count << endl;
+}           
+// Cả 2 có độ phức tạp O(n) và O(1)
+
+int main() {
+    PriorityQueue q;
+    makePriorityQueue(q);  // Khởi tạo hàng đợi ưu tiên
+
+    // Thêm các phần tử vào hàng đợi
+    enqueue(q, 5, 1);  // Thêm phần tử 5 với độ ưu tiên 1
+    enqueue(q, 3, 3);  // Thêm phần tử 3 với độ ưu tiên 3
+    enqueue(q, 8, 2);  // Thêm phần tử 8 với độ ưu tiên 2
+
+    // Hiển thị các phần tử trong hàng đợi
+    duyet(q);
+
+    // Truy vấn phần tử ưu tiên cao nhất
+    peek(q);
+
+    // Cập nhật độ ưu tiên của phần tử 5
+    cout <<" Cap nhat do uu tien phan tu 5 thanh 4 " << endl;
+    updatePriority(q, 5, 4);  // Cập nhật độ ưu tiên của phần tử 5 thành 4
+
+    // Hiển thị các phần tử trong hàng đợi sau khi cập nhật
+    duyet(q);
+
+    // Loại bỏ phần tử ưu tiên cao nhất
+    dequeue(q);
+
+    // Hiển thị các phần tử trong hàng đợi sau khi loại bỏ
+    duyet(q);
+
+    // Kiểm tra số lượng phần tử trong hàng đợi
+    size(q);
+
+    return 0;
+}
