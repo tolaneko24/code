@@ -1,0 +1,124 @@
+#include <iostream>
+using namespace std;
+// Định nghĩa cấu trúc hàng đợi thông thường
+struct node {
+    int data;          // Giá trị của phần tử 
+   
+   node* next;   // Con trỏ đến phần tử tiếp theo của danh sách
+   }; 
+   
+   // Tạo node mới để tiện cài đặt
+   node* makeNode(int x) {   
+   
+       node* newNode = new node();  // Cấp phát động
+   
+       newNode->data = x;                       // Gán giá trị của phần tử
+   
+       newNode->next = nullptr;           // Gán con trỏ NULL
+   
+       return newNode;                             // Trả về node mới là con trỏ kiểu node
+   }
+
+// Khởi tạo hàng đợi thông thường
+node* head = nullptr;    // con trỏ head kiểu node
+// độ phức tạp O(1)
+
+// Kiểm tra rỗng
+bool isEmpty(node* &head) { 
+    return head == nullptr; 
+ }
+ // độ phức tạp O(1)
+
+ // Thêm 1 phần tử vào danh sách
+ void enqueue( node* &head, int data) {
+    node* newNode = makeNode(data); // Tạo một node mới với giá trị và cho trước 
+    // Nếu hàng đợi rỗng gán node mới tạo là con trỏ đầu danh sách
+       if ( isEmpty( head ) ) {    
+          newNode->next = head; 
+          head = newNode; 
+          return;
+    } else { 
+         node* temp = head;
+         while (temp->next != nullptr){
+                  temp=temp->next;
+           }
+               temp->next=newNode;
+    }
+ }
+    // độ phức tạp O(n)
+
+    // Xóa phần tử đầu tiên
+    void dequeue(node* &head){
+
+        if ( isEmpty(head) ) { 
+        
+        cout << " danh sach rong " << endl; 
+        
+        return;            // nếu rỗng thì trả về không làm gì nữa
+        } 
+        
+        node* temp = head;               // gán biến tạm temp là con trỏ đầu danh sách 
+        
+        head = head->next;               // dịch con trỏ đầu danh sách về sau 
+        
+        delete temp;                            // xóa biến tạm giải phóng bộ nhớ
+    }  
+        // Độ phức tạp O(1)
+
+        // Truy vấn phần tử đầu tiên (không xóa)
+        void peek(node* head) {    
+            if ( isEmpty(head) ) { 
+                   cout << "Khong co gi de in ra " << endl;  
+                   return;
+               } 
+               cout << "Peek: " << head->data <<  endl; 
+           }
+           // Độ phức tạp O(1)
+
+           // duyệt danh sách
+void duyet (node* head){
+    while (head != nullptr) {
+   cout << head->data <<  endl;
+   head = head->next;
+}
+}
+// Đếm số phần tử 
+int size(node* head){
+   int count = 0;
+while (head != nullptr){
+    count++;
+    head=head->next;
+   }
+ return count;
+}
+// Cả 2 đều có độ phức tạp O(n)
+
+int main() {
+    // Thêm phần tử vào hàng đợi
+    enqueue(head, 10);  // Thêm phần tử 10
+    enqueue(head, 20);  // Thêm phần tử 20
+    enqueue(head, 30);  // Thêm phần tử 30
+    enqueue(head, 40);  // Thêm phần tử 40
+    enqueue(head, 50);  // Thêm phần tử 50
+
+    // Hiển thị các phần tử trong hàng đợi
+    cout << "Danh sach trong hang doi:" << endl;
+    duyet(head);
+
+    // Truy vấn phần tử đầu tiên
+    cout << "Phan tu dau hang doi: ";
+    peek(head);
+
+    // Loại bỏ phần tử đầu tiên
+    cout << "Xoa phan tu dau hang doi:" << endl;
+    dequeue(head);
+
+    // Hiển thị các phần tử trong hàng đợi sau khi loại bỏ phần tử đầu
+    cout << "Danh sach trong hang doi sau khi xoa:" << endl;
+    duyet(head);
+
+    // Kiểm tra số lượng phần tử trong hàng đợi
+    cout << "So phan tu trong hang doi: " << size(head) << endl;
+
+    return 0;
+}
