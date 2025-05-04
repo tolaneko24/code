@@ -110,8 +110,9 @@ void updatePriority(PriorityQueue &q, int d, int newPriority) {
 
           q.priority[j] = q.priority[j + 1];
         }
+          q.data[q.count-1] = 0;
+          q.priority[q.count-1] = 0;
           q.rear--;                                             // Lùi rear về trái  
-
           q.count--;                                        // Giảm số lượng phần tử
 
           enqueue(q, d, newPriority);   // Gọi hàm enqueue()
